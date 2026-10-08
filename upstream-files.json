@@ -1,0 +1,58 @@
+{
+  "release": "v0.2.1",
+  "archive": "https://github.com/storytold/lightcraft/releases/download/v0.2.1/lightcraft-web-0.2.1.zip",
+  "archiveSha256": "5b64a944583330e38e36d879984fd71d02efbe68a2d354e6f5211819eee5a8a5",
+  "archiveRoot": "lightcraft-web-0.2.1/",
+  "deployPath": "app/v0.2.1/",
+  "downloadTimeoutSeconds": 120,
+  "files": [
+    {
+      "source": "index.html",
+      "path": "app/v0.2.1/index.html",
+      "bytes": 1853,
+      "sha256": "ddebeb027830ae0d407f284d12209bb00239345219e2cdeeb3af36015abeb206"
+    },
+    {
+      "source": "lightcraft_web.js",
+      "path": "app/v0.2.1/lightcraft_web.js",
+      "bytes": 98689,
+      "sha256": "d3f5219dc7946f6e2b4027496d38109ea53965647a941a03ad9cd88a6d590004"
+    },
+    {
+      "source": "lightcraft_web_bg.wasm",
+      "path": "app/v0.2.1/lightcraft_web_bg.wasm",
+      "bytes": 32532988,
+      "sha256": "6f638265add786adf8c23aa6f0eb62e072acab18f5324fb923ea1a9332a2dae5"
+    },
+    {
+      "source": "worker.js",
+      "path": "app/v0.2.1/worker.js",
+      "bytes": 649,
+      "sha256": "c56f203f815546987d3cc60dd28c0c603a6d02ad8c050e348d0c4d32dfd006c6"
+    },
+    {
+      "source": "LICENSE-MIT",
+      "path": "app/v0.2.1/LICENSE-MIT",
+      "bytes": 1102,
+      "sha256": "1470a5d44a88a9d385d9530763ea411ca199670d07f561a61d54256323972b92"
+    },
+    {
+      "source": "LICENSE-APACHE",
+      "path": "app/v0.2.1/LICENSE-APACHE",
+      "bytes": 10174,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    {
+      "source": "README.md",
+      "path": "app/v0.2.1/README.md",
+      "bytes": 28710,
+      "sha256": "b56e0353789f3c69369d0b77a752de418b7149f5df7cd429fd31239479069a42"
+    },
+    {
+      "source": "HOSTING.md",
+      "path": "app/v0.2.1/HOSTING.md",
+      "bytes": 5627,
+      "sha256": "d6b7e8bb7537db990c3eeed0d6a54632077ab7e3874733cc134a471c954bb2b9"
+    }
+  ]
+}

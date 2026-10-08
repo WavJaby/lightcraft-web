@@ -1,0 +1,6 @@
+.cache/
+/_site*/
+*.zip
+*.wasm
+__pycache__/
+*.py[cod]
