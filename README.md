@@ -1,6 +1,6 @@
 # LightCraft Web host
 
-This repository deploys the official LightCraft web release as an unofficial community host. The upstream HTML, JavaScript, worker and WebAssembly files are copied byte-for-byte from the pinned release archive; the hosting notice and deployment script are separate community code.
+This repository deploys the official LightCraft web release as an unofficial community host. Official JavaScript, worker and WebAssembly files remain byte-identical. A community bootstrap inside the versioned app directory preserves worker URLs and exposes startup status to the host; the original upstream index.html remains available separately.
 
 Source: [storytold/lightcraft](https://github.com/storytold/lightcraft) · [Official site](https://getartcraft.com/apps/lightcraft) · [Release provenance](upstream-files.json)
 
@@ -16,7 +16,9 @@ The default Pages URL, `https://wavjaby.github.io/lightcraft-web/`, shares the `
 
 Run `python -m unittest discover -s tests -v` before deployment. GitHub Actions uses the same checks, uploads `_site/` as a Pages artifact and deploys it on pushes to `main`. Set the repository's Pages source to **GitHub Actions** on its first deployment.
 
-The app is placed under its versioned path (`app/v0.2.1/`), keeping each release's fixed upstream file names distinct. The root host forwards query parameters and fragments to the app, including `?workers=`, `?store=`, `?reset` and `?bench`.
+The app is placed under its versioned path (`app/v0.2.1/`), keeping each release's fixed upstream file names distinct. The root host forwards query parameters and fragments to `experience.html`, including `?workers=`, `?store=`, `?reset` and `?bench`. Builds generate content-addressed gzip parts with per-part SHA-256; the service worker verifies the final Wasm before completing compilation and caches verified bytes. Download progress measures actual transferred bytes; compilation and startup are separate states. Run `node --test tests/*.test.cjs` after building to check delivery, failures and packaged-byte reconstruction.
+
+The host follows the browser's first preferred language: Chinese -> Traditional Chinese, otherwise English. Notices, title, loading status and toolbar controls are localized; official editor menus retain the upstream language. First-use notices, optional dismissal, toolbar collapse and mobile fit controls follow the other ArtCraft hosts.
 
 ## Licenses and scope
 

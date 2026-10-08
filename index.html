@@ -3,38 +3,60 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Unofficial community host for LightCraft's browser photo library and raw developer.">
-  <title>LightCraft · Community host</title>
+  <meta name="description" content="An unofficial browser experience of LightCraft using the official WebAssembly module with a community bootstrap. LightCraft is made by the ArtCraft Team and contributors.">
+  <title>LightCraft · Unofficial browser experience</title>
   <link rel="stylesheet" href="./site.css">
+  <script src="./delivery-config.js" defer></script>
   <script src="./site.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#lightcraft-app" data-en="Skip to LightCraft" data-zh-hant="跳至 LightCraft">Skip to LightCraft</a>
-  <button id="toggle-toolbar" type="button" aria-controls="site-chrome" aria-expanded="true" title="Collapse site toolbar">▴</button>
-  <div class="site-chrome" id="site-chrome">
-    <header class="toolbar">
-      <div class="identity"><strong>LightCraft</strong><span data-en="Unofficial browser host" data-zh-hant="非官方瀏覽器託管版">Unofficial browser host</span></div>
-      <nav aria-label="Original project and host information" data-aria-en="Original project and host information" data-aria-zh-hant="原始專案與託管資訊">
-        <a href="https://github.com/storytold/lightcraft" target="_blank" rel="noopener noreferrer" data-en="Source ↗" data-zh-hant="原始碼 ↗">Source ↗</a>
-        <a href="https://github.com/storytold/lightcraft/releases" target="_blank" rel="noopener noreferrer" data-en="Official releases ↗" data-zh-hant="官方版本 ↗">Official releases ↗</a>
-        <a href="https://getartcraft.com/apps/lightcraft" target="_blank" rel="noopener noreferrer" data-en="Official site ↗" data-zh-hant="官方網站 ↗">Official site ↗</a>
-        <button id="show-notice" type="button" data-en="Data & privacy" data-zh-hant="資料與隱私">Data &amp; privacy</button>
-      </nav>
-    </header>
-    <aside class="notice" id="storage-notice" aria-label="Browser storage notice" data-aria-en="Browser storage notice" data-aria-zh-hant="瀏覽器儲存提醒">
-      <div class="notice-copy">
-        <p class="notice-lead" data-en="Experimental browser app: your library and imported photos stay in this browser. Keep original files and use File → Back Up Library…" data-zh-hant="實驗中的瀏覽器版：相片庫與匯入照片會留在此瀏覽器。請保留原始檔，並使用「檔案 → 備份相片庫…」。">Experimental browser app: your library and imported photos stay in this browser. Keep original files and use File → Back Up Library…</p>
-        <p class="notice-detail" data-en="LightCraft does not upload imported photos. Browsers may clear local data; back up before changing origins." data-zh-hant="LightCraft 不會上傳匯入的照片。瀏覽器可能清除本機資料；更換網站來源前請先備份。">LightCraft does not upload imported photos. Browsers may clear local data; back up before changing origins.</p>
-        <p class="notice-detail github-origin" id="github-origin-notice" hidden data-en="This GitHub Pages URL shares its browser origin with other WavJaby Pages sites. Scripts on those same-origin pages can access this browser data; use a dedicated custom domain for isolation." data-zh-hant="此 GitHub Pages 網址與其他 WavJaby Pages 共用瀏覽器來源；同來源頁面的程式可存取此瀏覽器資料。若要隔離資料，請使用專屬網域。">This GitHub Pages URL shares its browser origin with other WavJaby Pages sites. Scripts on those same-origin pages can access this browser data; use a dedicated custom domain for isolation.</p>
+  <button id="toggle-toolbar" type="button" aria-controls="site-toolbar" aria-expanded="true" title="Collapse site toolbar">▴</button>
+  <header class="toolbar" id="site-toolbar">
+    <div class="identity"><strong>LightCraft</strong><span data-i18n="badge">Unofficial browser experience · v0.2.1</span></div>
+    <nav aria-label="Original project and site information" data-i18n-aria="navigation">
+      <a href="https://github.com/storytold/lightcraft" target="_blank" rel="noopener noreferrer" data-i18n="source">Original GitHub ↗</a>
+      <a class="download" href="https://github.com/storytold/lightcraft/releases/latest" target="_blank" rel="noopener noreferrer" data-i18n="download">Download official desktop app ↗</a>
+      <button id="show-notice" type="button" data-i18n="notice">About this experience</button>
+    </nav>
+  </header>
+  <main id="editor-container" aria-label="LightCraft editor" data-i18n-aria="editor">
+    <div id="mobile-controls">
+      <label for="editor-scale" data-i18n="zoom">Editor zoom</label>
+      <select id="editor-scale"><option value="auto" data-i18n="fit">Fit width</option><option value="0.5">50%</option><option value="0.75">75%</option><option value="1">100%</option></select>
+      <output id="editor-scale-value" for="editor-scale"></output>
+      <span class="note" data-i18n="rotate">Landscape works best</span>
+    </div>
+    <div id="editor-host" data-app-path="__APP_PATH__"><p id="editor-placeholder" data-i18n="placeholder">Read the notice, then select “Start experience” to load the editor.</p></div>
+    <section id="host-loading" hidden aria-live="polite" aria-label="Loading LightCraft">
+      <div class="loading-card">
+        <h2 id="loading-title">Preparing LightCraft…</h2>
+        <progress id="loading-progress" max="100" aria-label="Application download progress"></progress>
+        <p id="loading-detail">Preparing the download…</p>
+        <p id="loading-time" class="note"></p>
+        <p id="loading-note" class="note">The first download is large. Keep this tab open; later visits can use a local cache.</p>
+        <div class="actions"><button id="retry-load" type="button" data-i18n="retry">Reload</button><a href="https://github.com/storytold/lightcraft/releases/latest" target="_blank" rel="noopener noreferrer" data-i18n="download">Download official desktop app ↗</a></div>
       </div>
-      <button id="dismiss-notice" class="notice-dismiss" type="button" data-en="Dismiss" data-zh-hant="收起">Dismiss</button>
-    </aside>
-  </div>
-  <main id="lightcraft-app">
-    <iframe id="lightcraft-frame" title="LightCraft image editor" data-title-en="LightCraft image editor" data-title-zh-hant="LightCraft 相片編輯器" data-app-path="__APP_PATH__" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen loading="eager"></iframe>
+    </section>
   </main>
-  <footer>
-    <span data-en="LightCraft by the ArtCraft Team and contributors · Unofficial community host · Not endorsed by the original project" data-zh-hant="LightCraft 由 ArtCraft Team 與貢獻者開發 · 非官方社群託管 · 未獲原專案背書">LightCraft by the ArtCraft Team and contributors · Unofficial community host · Not endorsed by the original project</span>
-  </footer>
+  <footer><span data-i18n="credit">LightCraft by ArtCraft + contributors · Unofficial mirror · </span><a href="./app/v0.2.1/LICENSE-MIT" target="_blank" rel="noopener" data-i18n="licenses">Licenses and credits</a></footer>
+  <dialog id="notice" aria-labelledby="notice-title">
+    <form method="dialog">
+      <p class="eyebrow">UNOFFICIAL COMMUNITY MIRROR</p>
+      <h1 id="notice-title" data-i18n="heading">An easier way to try LightCraft</h1>
+      <p data-i18n="purpose">This site simply makes LightCraft easier to try without installing it. LightCraft is developed by the ArtCraft Team and contributors. This mirror is not operated or endorsed by them.</p>
+      <p><span data-i18n="build">You are loading the official v0.2.1 WebAssembly module with a community bootstrap. </span><strong data-i18n="parity">The web and desktop apps share an editing engine, but their features are not identical.</strong></p>
+      <ul>
+        <li data-i18n="files">Photos and the library stay in this browser. Keep original files and use File → Back Up Library…; browser storage is not a backup.</li>
+        <li data-i18n="persistence">Browser storage can be cleared or evicted. This Pages site shares the wavjaby.github.io origin with other project sites; their scripts can access same-origin data.</li>
+        <li data-i18n="performance">Large photo libraries and raw processing use memory and GPU resources. The browser version is experimental; evaluate the official desktop app for production work.</li>
+        <li data-i18n="alpha">Mobile scaling adjusts display size, not touch support. The official editor retains its own language; this host translates its notices and loading interface.</li>
+      </ul>
+      <p class="note" data-i18n="evidence">Based on the v0.2.1 source, not an exhaustive test of every editing feature. Keep backups and evaluate the official desktop app before production work.</p>
+      <p id="storage-warning" class="note" hidden data-i18n="storage">Your browser blocks preference storage; this notice will return next visit.</p>
+      <label class="remember"><input id="remember-notice" type="checkbox"><span data-i18n="remember">Don't remind me in this browser (reopen via “About this experience”)</span></label>
+      <div class="actions"><a href="https://github.com/storytold/lightcraft/releases/latest" target="_blank" rel="noopener noreferrer" data-i18n="download">Download official desktop app ↗</a><button id="start-editor" value="continue" autofocus data-i18n="start">Start experience</button></div>
+    </form>
+  </dialog>
+  <noscript>This experience requires JavaScript and WebAssembly. You can also <a href="https://github.com/storytold/lightcraft/releases/latest">download the official desktop app</a>.</noscript>
 </body>
 </html>

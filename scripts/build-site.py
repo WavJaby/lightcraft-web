@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import os
@@ -18,9 +19,11 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC_FILES = ("index.html", "site.css", "site.js", "LICENSE", "README.md", "upstream-files.json")
+PUBLIC_FILES = ("index.html", "site.css", "site.js", "app-loader.js", "app-bootstrap.js", "hardware-check.js", "service-worker.js", "LICENSE", "README.md", "upstream-files.json")
 APP_PATH_TOKEN = "__APP_PATH__"
 HEX_SHA256 = re.compile(r"^[0-9a-f]{64}$")
+# Shared host policy: 512 KiB parts, four connections, bounded retries and startup probes.
+DELIVERY_POLICY = {"partBytes": 512 * 1024, "downloadConcurrency": 4, "partAttempts": 2, "partTimeoutMs": 90_000, "mobileEditorWidth": 960, "uiPollMs": 250, "slowNoticeSeconds": 30, "workerReadyTimeoutMs": 5_000}
 
 
 def sha256_file(path: Path) -> str:
@@ -150,6 +153,25 @@ def write_site(root: Path, output: Path, manifest: dict[str, Any], verified: lis
             target = staging.joinpath(*PurePosixPath(record["path"]).parts)
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(contents)
+        wasm_record, wasm = next((record, contents) for record, contents in verified if record["source"] == "lightcraft_web_bg.wasm")
+        compressed = gzip.compress(wasm, compresslevel=9, mtime=0)
+        package_path = f"delivery/{hashlib.sha256(compressed).hexdigest()}-{DELIVERY_POLICY['partBytes']}"
+        directory = staging / package_path
+        directory.mkdir(parents=True)
+        parts = []
+        for offset in range(0, len(compressed), DELIVERY_POLICY["partBytes"]):
+            chunk = compressed[offset:offset + DELIVERY_POLICY["partBytes"]]
+            digest = hashlib.sha256(chunk).hexdigest()
+            name = f"part-{len(parts):03d}-{digest}.bin"
+            (directory / name).write_bytes(chunk)
+            parts.append({"path": name, "bytes": len(chunk), "sha256": digest})
+        if gzip.decompress(b"".join((directory / part["path"]).read_bytes() for part in parts)) != wasm:
+            raise ValueError("Packaging failed byte-exact reconstruction gate")
+        package = {"encoding": "gzip", "wasmBytes": len(wasm), "wasmSha256": wasm_record["sha256"], "compressedBytes": len(compressed), "parts": parts}
+        (directory / "manifest.json").write_text(json.dumps(package), encoding="utf-8")
+        config = {**DELIVERY_POLICY, "appId": "lightcraft", "version": manifest["release"][1:], "revision": wasm_record["sha256"][:16], "wasmPath": wasm_record["path"], "wasmBytes": len(wasm), "wasmSha256": wasm_record["sha256"], "partsManifest": f"{package_path}/manifest.json"}
+        (staging / "delivery-config.js").write_text(f"'use strict';\nglobalThis.LIGHTCRAFT_DELIVERY = Object.freeze({json.dumps(config)});\n", encoding="utf-8")
+        shutil.copy2(root / "app.html", staging / manifest["deployPath"] / "experience.html")
         os.replace(staging, output)
 
 
