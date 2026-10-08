@@ -23,19 +23,45 @@ frame.src = frameUrl.href;
 
 const notice = document.getElementById('storage-notice');
 const noticeKey = 'lightcraft-web.notice.v1';
-let noticeStorage;
-let noticeStorageFailures = 0;
+const siteChrome = document.getElementById('site-chrome');
+const toolbarToggle = document.getElementById('toggle-toolbar');
+const toolbarKey = 'lightcraft-web.toolbar.v1';
+let hostStorage;
+let hostStorageFailures = 0;
 const countStorageFailure = () => {
-  noticeStorageFailures += 1;
-  notice.dataset.storageFailures = String(noticeStorageFailures);
+  hostStorageFailures += 1;
+  document.documentElement.dataset.storageFailures = String(hostStorageFailures);
 };
 
+function setToolbar(collapsed) {
+  siteChrome.hidden = collapsed;
+  document.body.classList.toggle('toolbar-collapsed', collapsed);
+  toolbarToggle.setAttribute('aria-expanded', String(!collapsed));
+  toolbarToggle.title = collapsed
+    ? (traditionalChinese ? '展開站點工具列' : 'Show site toolbar')
+    : (traditionalChinese ? '收合站點工具列' : 'Collapse site toolbar');
+  toolbarToggle.setAttribute('aria-label', toolbarToggle.title);
+  toolbarToggle.textContent = collapsed ? '▾' : '▴';
+}
+
 try {
-  noticeStorage = window.localStorage;
-  if (noticeStorage.getItem(noticeKey) === 'dismissed') notice.hidden = true;
+  hostStorage = window.localStorage;
+  if (hostStorage.getItem(noticeKey) === 'dismissed') notice.hidden = true;
+  setToolbar(hostStorage.getItem(toolbarKey) === 'collapsed');
 } catch {
   countStorageFailure();
+  setToolbar(false);
 }
+
+toolbarToggle.addEventListener('click', () => {
+  setToolbar(!siteChrome.hidden);
+  if (!hostStorage) return;
+  try {
+    hostStorage.setItem(toolbarKey, siteChrome.hidden ? 'collapsed' : 'expanded');
+  } catch {
+    countStorageFailure();
+  }
+});
 
 if (window.location.hostname.toLowerCase().endsWith('.github.io')) {
   document.getElementById('github-origin-notice').hidden = false;
@@ -43,9 +69,9 @@ if (window.location.hostname.toLowerCase().endsWith('.github.io')) {
 
 document.getElementById('dismiss-notice').addEventListener('click', () => {
   notice.hidden = true;
-  if (!noticeStorage) return;
+  if (!hostStorage) return;
   try {
-    noticeStorage.setItem(noticeKey, 'dismissed');
+    hostStorage.setItem(noticeKey, 'dismissed');
   } catch {
     countStorageFailure();
   }

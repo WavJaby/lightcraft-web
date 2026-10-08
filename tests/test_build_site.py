@@ -42,6 +42,20 @@ class BuildSiteTests(unittest.TestCase):
         (root / "upstream-files.json").write_text(json.dumps(manifest), encoding="utf-8")
         return root, archive_path, manifest
 
+    def test_host_shell_fills_viewport_and_exposes_toolbar_toggle(self):
+        page = (ROOT / "index.html").read_text(encoding="utf-8")
+        styles = (ROOT / "site.css").read_text(encoding="utf-8")
+        script = (ROOT / "site.js").read_text(encoding="utf-8")
+        self.assertIn('id="toggle-toolbar" type="button" aria-controls="site-chrome"', page)
+        self.assertIn('id="site-chrome"', page)
+        self.assertIn("height: 100dvh", styles)
+        self.assertIn("grid-template-rows: auto minmax(0, 1fr) auto", styles)
+        self.assertIn("body.toolbar-collapsed", styles)
+        self.assertIn("height: 100%; min-width: 0; min-height: 0", styles)
+        self.assertIn("siteChrome.hidden = collapsed", script)
+        self.assertIn("lightcraft-web.toolbar.v1", script)
+        self.assertIn("toolbarToggle.addEventListener('click'", script)
+
     def test_site_keeps_only_pinned_files_and_uses_versioned_path(self):
         with tempfile.TemporaryDirectory(dir=ROOT) as temporary:
             parent = Path(temporary)

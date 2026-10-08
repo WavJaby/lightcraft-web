@@ -14,9 +14,9 @@
 
 * { box-sizing: border-box; }
 
-html, body { width: 100%; min-height: 100%; margin: 0; }
+html, body { width: 100%; height: 100%; margin: 0; }
 
-body { min-height: 100dvh; display: grid; grid-template-rows: auto auto minmax(24rem, 1fr) auto; }
+body { height: 100dvh; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }
 
 a { color: var(--accent); }
 
@@ -26,7 +26,17 @@ a:focus-visible, button:focus-visible, .skip-link:focus-visible { outline: 2px s
 
 .skip-link:focus { transform: translateY(0); }
 
-.toolbar { min-height: 3.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.5rem 1rem; background: var(--surface); border-bottom: 1px solid var(--border); }
+.site-chrome[hidden] { display: none; }
+
+.toolbar { min-height: 3.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.5rem 3rem 0.5rem 1rem; background: var(--surface); border-bottom: 1px solid var(--border); }
+
+#toggle-toolbar { position: absolute; top: 0.5rem; right: 0.5rem; z-index: 5; width: 1.8rem; height: 1.8rem; padding: 0; }
+
+body.toolbar-collapsed { grid-template-rows: minmax(0, 1fr) auto; }
+
+body.toolbar-collapsed main { margin-right: 1.8rem; }
+
+body.toolbar-collapsed #toggle-toolbar { top: 0.2rem; right: 0.15rem; width: 1.5rem; height: 1.5rem; }
 
 .identity { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.65rem; }
 
@@ -56,9 +66,9 @@ button:hover { background: #454545; }
 
 .notice-dismiss { flex: 0 0 auto; }
 
-main { min-height: 24rem; overflow: hidden; background: #1c1c1c; }
+main { min-width: 0; min-height: 0; overflow: hidden; background: #1c1c1c; }
 
-iframe { display: block; width: 100%; height: 100%; min-height: 24rem; border: 0; background: #1c1c1c; }
+iframe { display: block; width: 100%; height: 100%; min-width: 0; min-height: 0; border: 0; background: #1c1c1c; }
 
 footer { padding: 0.55rem 1rem; text-align: center; background: var(--surface); border-top: 1px solid var(--border); }
 
@@ -66,6 +76,7 @@ footer { padding: 0.55rem 1rem; text-align: center; background: var(--surface); 
   .toolbar { align-items: flex-start; flex-direction: column; }
   nav { justify-content: flex-start; gap: 0.55rem 0.75rem; }
   .notice { align-items: flex-start; }
+  body.toolbar-collapsed #toggle-toolbar { top: 0.35rem; right: 0.15rem; }
 }
 
 @media (max-width: 520px) {

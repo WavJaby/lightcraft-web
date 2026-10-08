@@ -10,23 +10,26 @@
 </head>
 <body>
   <a class="skip-link" href="#lightcraft-app" data-en="Skip to LightCraft" data-zh-hant="跳至 LightCraft">Skip to LightCraft</a>
-  <header class="toolbar">
-    <div class="identity"><strong>LightCraft</strong><span data-en="Unofficial browser host" data-zh-hant="非官方瀏覽器託管版">Unofficial browser host</span></div>
-    <nav aria-label="Original project and host information" data-aria-en="Original project and host information" data-aria-zh-hant="原始專案與託管資訊">
-      <a href="https://github.com/storytold/lightcraft" target="_blank" rel="noopener noreferrer" data-en="Source ↗" data-zh-hant="原始碼 ↗">Source ↗</a>
-      <a href="https://github.com/storytold/lightcraft/releases" target="_blank" rel="noopener noreferrer" data-en="Official releases ↗" data-zh-hant="官方版本 ↗">Official releases ↗</a>
-      <a href="https://getartcraft.com/apps/lightcraft" target="_blank" rel="noopener noreferrer" data-en="Official site ↗" data-zh-hant="官方網站 ↗">Official site ↗</a>
-      <button id="show-notice" type="button" data-en="Data & privacy" data-zh-hant="資料與隱私">Data &amp; privacy</button>
-    </nav>
-  </header>
-  <aside class="notice" id="storage-notice" aria-label="Browser storage notice" data-aria-en="Browser storage notice" data-aria-zh-hant="瀏覽器儲存提醒">
-    <div class="notice-copy">
-      <p class="notice-lead" data-en="Experimental browser app: your library and imported photos stay in this browser. Keep original files and use File → Back Up Library…" data-zh-hant="實驗中的瀏覽器版：相片庫與匯入照片會留在此瀏覽器。請保留原始檔，並使用「檔案 → 備份相片庫…」。">Experimental browser app: your library and imported photos stay in this browser. Keep original files and use File → Back Up Library…</p>
-      <p class="notice-detail" data-en="LightCraft does not upload imported photos. Browsers may clear local data; back up before changing origins." data-zh-hant="LightCraft 不會上傳匯入的照片。瀏覽器可能清除本機資料；更換網站來源前請先備份。">LightCraft does not upload imported photos. Browsers may clear local data; back up before changing origins.</p>
-      <p class="notice-detail github-origin" id="github-origin-notice" hidden data-en="This GitHub Pages URL shares its browser origin with other WavJaby Pages sites. Scripts on those same-origin pages can access this browser data; use a dedicated custom domain for isolation." data-zh-hant="此 GitHub Pages 網址與其他 WavJaby Pages 共用瀏覽器來源；同來源頁面的程式可存取此瀏覽器資料。若要隔離資料，請使用專屬網域。">This GitHub Pages URL shares its browser origin with other WavJaby Pages sites. Scripts on those same-origin pages can access this browser data; use a dedicated custom domain for isolation.</p>
-    </div>
-    <button id="dismiss-notice" class="notice-dismiss" type="button" data-en="Dismiss" data-zh-hant="收起">Dismiss</button>
-  </aside>
+  <button id="toggle-toolbar" type="button" aria-controls="site-chrome" aria-expanded="true" title="Collapse site toolbar">▴</button>
+  <div class="site-chrome" id="site-chrome">
+    <header class="toolbar">
+      <div class="identity"><strong>LightCraft</strong><span data-en="Unofficial browser host" data-zh-hant="非官方瀏覽器託管版">Unofficial browser host</span></div>
+      <nav aria-label="Original project and host information" data-aria-en="Original project and host information" data-aria-zh-hant="原始專案與託管資訊">
+        <a href="https://github.com/storytold/lightcraft" target="_blank" rel="noopener noreferrer" data-en="Source ↗" data-zh-hant="原始碼 ↗">Source ↗</a>
+        <a href="https://github.com/storytold/lightcraft/releases" target="_blank" rel="noopener noreferrer" data-en="Official releases ↗" data-zh-hant="官方版本 ↗">Official releases ↗</a>
+        <a href="https://getartcraft.com/apps/lightcraft" target="_blank" rel="noopener noreferrer" data-en="Official site ↗" data-zh-hant="官方網站 ↗">Official site ↗</a>
+        <button id="show-notice" type="button" data-en="Data & privacy" data-zh-hant="資料與隱私">Data &amp; privacy</button>
+      </nav>
+    </header>
+    <aside class="notice" id="storage-notice" aria-label="Browser storage notice" data-aria-en="Browser storage notice" data-aria-zh-hant="瀏覽器儲存提醒">
+      <div class="notice-copy">
+        <p class="notice-lead" data-en="Experimental browser app: your library and imported photos stay in this browser. Keep original files and use File → Back Up Library…" data-zh-hant="實驗中的瀏覽器版：相片庫與匯入照片會留在此瀏覽器。請保留原始檔，並使用「檔案 → 備份相片庫…」。">Experimental browser app: your library and imported photos stay in this browser. Keep original files and use File → Back Up Library…</p>
+        <p class="notice-detail" data-en="LightCraft does not upload imported photos. Browsers may clear local data; back up before changing origins." data-zh-hant="LightCraft 不會上傳匯入的照片。瀏覽器可能清除本機資料；更換網站來源前請先備份。">LightCraft does not upload imported photos. Browsers may clear local data; back up before changing origins.</p>
+        <p class="notice-detail github-origin" id="github-origin-notice" hidden data-en="This GitHub Pages URL shares its browser origin with other WavJaby Pages sites. Scripts on those same-origin pages can access this browser data; use a dedicated custom domain for isolation." data-zh-hant="此 GitHub Pages 網址與其他 WavJaby Pages 共用瀏覽器來源；同來源頁面的程式可存取此瀏覽器資料。若要隔離資料，請使用專屬網域。">This GitHub Pages URL shares its browser origin with other WavJaby Pages sites. Scripts on those same-origin pages can access this browser data; use a dedicated custom domain for isolation.</p>
+      </div>
+      <button id="dismiss-notice" class="notice-dismiss" type="button" data-en="Dismiss" data-zh-hant="收起">Dismiss</button>
+    </aside>
+  </div>
   <main id="lightcraft-app">
     <iframe id="lightcraft-frame" title="LightCraft image editor" data-title-en="LightCraft image editor" data-title-zh-hant="LightCraft 相片編輯器" data-app-path="__APP_PATH__" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen loading="eager"></iframe>
   </main>
